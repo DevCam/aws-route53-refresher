@@ -60,6 +60,13 @@ namespace AwsRoute53Refresher
       _logger.LogInformation($"Current public IP Address is: {_publicIp}");
       _logger.LogInformation($"Retrieving HostedZones that match target domain {_options.TargetDomain}");
       await TryGetHostedZones();
+
+      if(_publicIp == null)
+      {
+        _logger.LogWarning("initial public IP could not be obtained...");
+        return;
+      }
+
       _logger.LogInformation($"Updating route53 records...");
       await TryUpdateRoute53Records();
     }
@@ -82,7 +89,7 @@ namespace AwsRoute53Refresher
       {
         var grabExternalIp = new WebClient().DownloadStringTaskAsync(_options.PublicIpProvider);
 
-        if(await Task.WhenAny(grabExternalIp, Task.Delay(1000)) == grabExternalIp)
+        if(await Task.WhenAny(grabExternalIp, Task.Delay(5000)) == grabExternalIp)
         {
           _logger.LogInformation($"Got correct IP {grabExternalIp.Result} from provider");
           return grabExternalIp.Result;
