@@ -54,5 +54,5 @@ Values can be set using standard `appsettings.json`, `ENV` variables or as comma
 -   Environment variables.
 -   Command-line arguments. 
 
-[GNUv3](https://www.gnu.org/licenses/gpl-3.0.en.html)
-`[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)`
+
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
