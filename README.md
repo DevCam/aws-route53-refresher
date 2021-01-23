@@ -14,8 +14,10 @@ For those of us who are too cheap to purchase a DDNS provider.
  3. As a standalone `Docker` container
    - `docker build -t image-name .`
    - `docker run -d image-name -v $HOME/.aws/credentials:/root/.aws/credentials:ro`
- 4. from hub
-   - `docker run -d -e 'RefresherOptions__TargetDomain=yourdomain.com' devcam/aws-route53-refresher -v $HOME/.aws/credentials:/root/.aws/credentials:ro`
+ 4. from dockerhub
+   - ` docker run -d \
+      -e 'RefresherOptions__TargetDomain=yourdomain.com' \
+      -v $HOME/.aws/credentials:/root/.aws/credentials:ro devcam/aws-route53-refresher `
 
 Note: if preferred, global AWS credentials can be configured as ENV variables ( [although not recommended](https://diogomonica.com/2017/03/27/why-you-shouldnt-use-env-variables-for-secret-data/) ) or passed as CLI args, if so it is not required to mount the `.aws` folder. 
 
