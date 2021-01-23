@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  refresher:
+    build: .
+    volumes: 
+      - $HOME/.aws/credentials:/root/.aws/credentials:ro
+    environment: 
+      AWS_PROFILE: aws-route53-refresher
+      AWS_REGION: us-west-2
+      RefresherOptions__Enabled: "true"
+      RefresherOptions__RefreshRateInMs: "60000"
+      RefresherOptions__PublicIpProvider: "https://api.ipify.org"
+      RefresherOptions__TargetDomain: "domain.com"
