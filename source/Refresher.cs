@@ -132,26 +132,15 @@ namespace AwsRoute53Refresher
         throw;
       }
 
-      var zonesToUpdate =
-        from zone in zonesResponse.HostedZones
-        where zone.Name.Contains(_options.TargetDomain)
-        select zone;
-
-      if(!zonesToUpdate.Any())
-      {
-        _logger.LogError($"No valid Zones matched {_options.TargetDomain}! no DNS records will be updated!");
-        return;
-      }
-
-      foreach (var zone in zonesToUpdate)
+      foreach (var zone in zonesResponse.HostedZones)
       {
         var recordsResponse = await _amazonRoute53.ListResourceRecordSetsAsync(new ListResourceRecordSetsRequest(zone.Id));
 
-        var targetRecord = recordsResponse.ResourceRecordSets.FirstOrDefault(
-          (record) => record.Type == RRType.A
+        var matchedRecords = recordsResponse.ResourceRecordSets.FindAll(
+          (record) => record.Type == RRType.A && record.Name.Contains(_options.TargetDomain)
         );
 
-        if (targetRecord != null)
+        foreach(var targetRecord in matchedRecords)
         {
           _logger.LogInformation($"Got zone {zone.Name} & Target record w/ val {targetRecord.ResourceRecords[0].Value}");
           _zonesToUpdate.Add(zone, targetRecord);
